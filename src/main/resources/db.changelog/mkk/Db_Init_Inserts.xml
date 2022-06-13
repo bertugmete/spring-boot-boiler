@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="002" author="Bertug.Mete">
+        <insert tableName="MKK_USER">
+            <column name="USER_NAME" value="bertug.mete"/>
+            <column name="FIRST_NAME" value="Bertug"/>
+            <column name="LAST_NAME" value="Mete"/>
+            <column name="PASSWORD" value="1234"/>
+        </insert>
+
+        <insert tableName="APPLICATION_MESSAGE">
+            <column name="CODE" value="MKK-001"/>
+            <column name="NAME" value="UserNotFoundException"/>
+            <column name="MESSAGE" value="User bulunamadı"/>
+            <column name="TYPE" value="ERROR"/>
+        </insert>
+
+        <insert tableName="APPLICATION_MESSAGE">
+            <column name="CODE" value="MKK-002"/>
+            <column name="NAME" value="InvalidRefreshToken"/>
+            <column name="MESSAGE" value="Hatalı refresh token"/>
+            <column name="TYPE" value="ERROR"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
