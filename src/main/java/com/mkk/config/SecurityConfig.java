@@ -2,6 +2,7 @@ package com.mkk.config;
 
 import com.mkk.security.JwtAuthenticationEntryPoint;
 import com.mkk.security.JwtAuthenticationFilter;
+import com.mkk.security.OpenLdapAuthenticationProvider;
 import com.mkk.service.user.UserDetailsServiceImp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtAuthenticationEntryPoint handler;
 
-    public SecurityConfig(UserDetailsServiceImp userDetailsService, JwtAuthenticationEntryPoint handler) {
+    private final OpenLdapAuthenticationProvider openLdapAuthenticationProvider;
+
+
+    public SecurityConfig(UserDetailsServiceImp userDetailsService, JwtAuthenticationEntryPoint handler, OpenLdapAuthenticationProvider openLdapAuthenticationProvider) {
         this.userDetailsService = userDetailsService;
         this.handler = handler;
+        this.openLdapAuthenticationProvider = openLdapAuthenticationProvider;
     }
 
     @Bean
@@ -49,9 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
+        authenticationManagerBuilder.authenticationProvider(openLdapAuthenticationProvider);
+
+        // authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
 
     @Bean
     public CorsFilter corsFilter() {
