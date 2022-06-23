@@ -2,13 +2,11 @@ package com.mkk.config;
 
 import com.mkk.security.JwtAuthenticationEntryPoint;
 import com.mkk.security.JwtAuthenticationFilter;
-import com.mkk.security.OpenLdapAuthenticationProvider;
 import com.mkk.service.user.UserDetailsServiceImp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,13 +26,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtAuthenticationEntryPoint handler;
 
-    private final OpenLdapAuthenticationProvider openLdapAuthenticationProvider;
+    // private final OpenLdapAuthenticationProvider openLdapAuthenticationProvider;
 
 
-    public SecurityConfig(UserDetailsServiceImp userDetailsService, JwtAuthenticationEntryPoint handler, OpenLdapAuthenticationProvider openLdapAuthenticationProvider) {
+    public SecurityConfig(UserDetailsServiceImp userDetailsService, JwtAuthenticationEntryPoint handler) {
         this.userDetailsService = userDetailsService;
         this.handler = handler;
-        this.openLdapAuthenticationProvider = openLdapAuthenticationProvider;
     }
 
     @Bean
@@ -53,12 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) {
-        authenticationManagerBuilder.authenticationProvider(openLdapAuthenticationProvider);
-
-        // authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
 
 
     @Bean
@@ -88,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(handler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/auth/**")
+                .antMatchers("/auth/**", "/swagger-ui.html", "/swagger-ui/index.html", "/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()
                 .anyRequest().authenticated();
 
