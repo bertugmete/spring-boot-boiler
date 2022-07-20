@@ -1,0 +1,19 @@
+<!-- logback configurations for localhost -->
+<configuration>
+    <property name="pattern_with_color"
+              value="%cyan(%d{HH:mm:ss}) %highlight(%-7([%level])) %yellow([%logger{0}]) %red(%L:) %m%n%red(%xException)"/>
+    <property name="pattern_without_color" value="%d{HH:mm:ss} %-7([%level]) [%logger{0}] %L: %m%n%xException"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>${pattern_with_color}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="INFO"/>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>
